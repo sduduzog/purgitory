@@ -93,13 +93,10 @@ export async function start() {
   const localFiltered = branches.filter((item) => {
     return current !== item && defaultBranch !== item;
   });
-  const unique1 = localFiltered.filter(
+  const unique = localFiltered.filter(
     (item) => remoteFiltered.indexOf(item) === -1
   );
-  const unique2 = remoteFiltered.filter(
-    (item) => localFiltered.indexOf(item) === -1
-  );
-  const unique = unique1.concat(unique2);
+
   console.log("Branches to delete");
   unique.forEach((item) => {
     console.log(`${item}`);
