@@ -1,7 +1,18 @@
 #!/usr/bin/env node
-import { type, platform } from "os";
+
 import { start } from "./app";
 
-console.log(type());
-console.log(platform());
-console.log(process.env);
+start();
+
+/**
+ * check if git installed
+ * check if current directory is repository
+ * fetch latest
+ * get head branch
+ * get merged branches
+ *  if still remote, then ignore
+ *  if current, then ignore
+ *  else delete
+ */
+
+const regex = /(?!origin\/HEAD\s.*)^origin\/.*/gm; // excluding
