@@ -1,0 +1,28 @@
+{
+  "name": "purgitory",
+  "version": "0.0.1",
+  "description": "Purge local branches that have been merged to the main branch in remote",
+  "main": "bin/index.js",
+  "bin": "./bin/index.js",
+  "repository": "git@github.com:sduduzog/purgitory.git",
+  "author": "sduduzog <gumedesduduzo@gmail.com>",
+  "license": "GLP-3.0",
+  "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=10.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.10.1",
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "eslint": "^7.8.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.4.2",
+    "typescript": "^4.0.2"
+  }
+}
