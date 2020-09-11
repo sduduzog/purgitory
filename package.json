@@ -9,7 +9,8 @@
   "license": "GLP-3.0",
   "private": false,
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "tsc -w"
   },
   "dependencies": {},
   "engines": {

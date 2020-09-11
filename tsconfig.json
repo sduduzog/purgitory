@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "isolatedModules": true,
+    "isolatedModules": false,
     "target": "es2019",
-    "esModuleInterop": true,
-    "module": "esnext",
-    "strict": true,
-    "lib": ["ES2020"],
+    "module": "CommonJS",
+    "strict": false,
+    "noImplicitUseStrict": true,
+    "lib": ["ESNext"],
     "moduleResolution": "node",
     "baseUrl": ".",
     "outDir": "bin",
