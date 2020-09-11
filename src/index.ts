@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+import { type } from "os";
 import { start } from "./app";
 
-start();
+console.log(type());
