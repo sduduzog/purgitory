@@ -1,5 +1,14 @@
 #!/usr/bin/env node
 
 import { start } from "./app";
+import yargs from "yargs";
 
-start();
+const args = yargs.usage("Usage: $0 [options]").option("dry-run", {
+  alias: "d",
+  type: "boolean",
+  default: false,
+  description: "A rehearsal, no side effects",
+}).argv;
+
+console.log("fooooo", args);
+start(args);
