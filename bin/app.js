@@ -107,6 +107,10 @@ async function start() {
         return current !== item && defaultBranch !== item;
     });
     const unique = localFiltered.filter(item => remoteFiltered.indexOf(item) === -1);
+    if (unique.length === 0) {
+        console.log("Nothing to purge, exiting");
+        return;
+    }
     console.log("Branches to purge");
     unique.forEach(item => {
         console.log(`${item}`);
