@@ -167,7 +167,7 @@ export async function start(args: IArgs): Promise<void> {
   updateBottonBar("done\n");
   updateBottonBar("getting default branch (origin/HEAD) from remote");
   const defaultBranch = await safeRun(getRemoteHead, true);
-  updateBottonBar("done: getting default branch");
+  updateBottonBar("done: getting default branch from remote\n");
   const remoteBranches = await safeRun(listGitRemoteBranches);
   const { current, branches } = await safeRun(listGitLocalBranches);
 
