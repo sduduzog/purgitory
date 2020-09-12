@@ -155,7 +155,7 @@ async function start(args) {
     updateBottonBar("done\n");
     updateBottonBar("getting default branch (origin/HEAD) from remote");
     const defaultBranch = await safeRun(getRemoteHead, true);
-    updateBottonBar(`default branch is '${defaultBranch}'\n`);
+    updateBottonBar("done: getting default branch");
     const remoteBranches = await safeRun(listGitRemoteBranches);
     const { current, branches } = await safeRun(listGitLocalBranches);
     if (current !== defaultBranch) {
