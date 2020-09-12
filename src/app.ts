@@ -1,4 +1,5 @@
 import { execSync } from "child_process";
+import inquirer from "inquirer";
 
 function isGitInstalled() {
   try {
@@ -48,7 +49,7 @@ function listGitRemoteBranches() {
     const result = execSync("git branch -r", { encoding: "utf-8" });
     const listOfBranches = result.split("\n");
     const branches = [];
-    listOfBranches.forEach((item) => {
+    listOfBranches.forEach(item => {
       const trimmed = item.trim();
       const matched = trimmed.match(/(?!origin\/HEAD\s.*)^origin\/.*/);
       if (matched) {
@@ -67,7 +68,7 @@ function listGitLocalBranches() {
     const listOfBranches = result.split("\n");
     const branches: Array<string> = [];
     let current = "";
-    listOfBranches.forEach((item) => {
+    listOfBranches.forEach(item => {
       const trimmed = item.trim();
       const split = trimmed.split(" ");
       if (split.length > 1) {
@@ -77,28 +78,52 @@ function listGitLocalBranches() {
         branches.push(trimmed);
       }
     });
-    return { current, branches: branches.filter((item) => item.length > 0) };
+    return { current, branches: branches.filter(item => item.length > 0) };
   } catch (error) {
     return {};
   }
+}
+
+function deleteBranches(branches: Array<string>) {
+  branches.forEach(branch => {
+    try {
+      const result = execSync(`git branch -d ${branch}`);
+      console.log(result);
+    } catch (error) {
+      console.log(`counldn't delete branch '${branch}'`, error);
+    }
+  });
 }
 
 export async function start() {
   const defaultBranch = getRemoteHead();
   const remoteBranches = listGitRemoteBranches();
   const { current, branches } = listGitLocalBranches();
-  const remoteFiltered = remoteBranches.filter(
-    (item) => item !== defaultBranch
-  );
-  const localFiltered = branches.filter((item) => {
+  const remoteFiltered = remoteBranches.filter(item => item !== defaultBranch);
+  const localFiltered = branches.filter(item => {
     return current !== item && defaultBranch !== item;
   });
   const unique = localFiltered.filter(
-    (item) => remoteFiltered.indexOf(item) === -1
+    item => remoteFiltered.indexOf(item) === -1
   );
 
-  console.log("Branches to delete");
-  unique.forEach((item) => {
+  console.log("Branches to purge");
+  unique.forEach(item => {
     console.log(`${item}`);
   });
+  try {
+    const response = await inquirer.prompt([
+      {
+        type: "confirm",
+        name: "continue",
+        message: "Continue with purge?",
+        default: () => "Y",
+      },
+    ]);
+    if (response.continue) {
+      deleteBranches(unique);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }

@@ -7,6 +7,7 @@
     "noImplicitUseStrict": true,
     "lib": ["ESNext"],
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "baseUrl": ".",
     "outDir": "bin",
     "paths": {
@@ -14,5 +15,5 @@
     }
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "bin"]
 }
