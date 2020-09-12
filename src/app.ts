@@ -87,7 +87,7 @@ function listGitLocalBranches() {
 function deleteBranches(branches: Array<string>) {
   branches.forEach(branch => {
     try {
-      const result = execSync(`git branch -d ${branch}`);
+      const result = execSync(`git branch -d ${branch}`, { encoding: "utf-8" });
       console.log(result);
     } catch (error) {
       console.log(`counldn't delete branch '${branch}'`, error);
