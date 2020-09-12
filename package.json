@@ -10,6 +10,14 @@
   "repository": "git@github.com:sduduzog/purgitory.git",
   "author": "sduduzog <gumedesduduzo@gmail.com>",
   "license": "GLP-3.0",
+  "keywords": [
+    "purge",
+    "git",
+    "prune",
+    "branches",
+    "purgit",
+    "purgitory"
+  ],
   "private": false,
   "scripts": {
     "build": "tsc",
