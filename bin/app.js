@@ -155,7 +155,7 @@ async function start(args) {
     updateBottonBar("done\n");
     updateBottonBar("getting default branch (origin/HEAD) from remote");
     const defaultBranch = await safeRun(getRemoteHead, true);
-    updateBottonBar("done: getting default branch");
+    updateBottonBar("done: getting default branch from remote\n");
     const remoteBranches = await safeRun(listGitRemoteBranches);
     const { current, branches } = await safeRun(listGitLocalBranches);
     if (current !== defaultBranch) {
@@ -163,12 +163,12 @@ async function start(args) {
     }
     const branchesToDelete = getMergedBranchestoDelete(defaultBranch, current, remoteBranches, branches);
     if (branchesToDelete.length === 0) {
-        console.log("No branches to delete, exiting");
+        console.log("No branches to delete, exiting\n");
         process.exit();
     }
     console.log("The following branches will be purged\n\n");
     branchesToDelete.forEach(branch => {
-        console.log(`  ${branch}`);
+        console.log(` ${branch}`);
     });
     console.log("\n");
     const shouldContinue = await safeRun(promptForConfirmation);

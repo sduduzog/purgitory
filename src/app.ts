@@ -185,13 +185,13 @@ export async function start(args: IArgs): Promise<void> {
   );
 
   if (branchesToDelete.length === 0) {
-    console.log("No branches to delete, exiting");
+    console.log("No branches to delete, exiting\n");
     process.exit();
   }
 
   console.log("The following branches will be purged\n\n");
   branchesToDelete.forEach(branch => {
-    console.log(`  ${branch}`);
+    console.log(` ${branch}`);
   });
   console.log("\n");
 

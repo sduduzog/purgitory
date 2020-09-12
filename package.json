@@ -21,7 +21,8 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "stage": "git add *.js"
   },
   "precommit": [
     "build"
