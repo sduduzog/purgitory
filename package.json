@@ -1,6 +1,6 @@
 {
   "name": "purgitory",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Purge local branches that have been merged to the main branch in remote",
   "main": "bin/index.js",
   "bin": {

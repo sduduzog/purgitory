@@ -88,7 +88,7 @@ function deleteBranches(branches: Array<string>) {
   branches.forEach(branch => {
     try {
       const result = execSync(`git branch -d ${branch}`, { encoding: "utf-8" });
-      console.log(result);
+      console.log("deleted", branch);
     } catch (error) {
       console.log(`counldn't delete branch '${branch}'`, error);
     }
