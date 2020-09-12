@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
 import inquirer from "inquirer";
 
-function isGitInstalled() {
+function checkGitInstalled() {
   try {
     const result = execSync("git --version", { encoding: "utf-8" });
     return !!result?.length;
@@ -10,7 +10,7 @@ function isGitInstalled() {
   }
 }
 
-function isDirectoryAGitRepository() {
+function checkDirectoryIsGitRepository() {
   try {
     const result = execSync("git rev-parse --is-inside-work-tree 2>/dev/null", {
       encoding: "utf-8",
@@ -96,6 +96,9 @@ function deleteBranches(branches: Array<string>) {
 }
 
 export async function start() {
+  checkGitInstalled();
+  checkDirectoryIsGitRepository();
+
   const defaultBranch = getRemoteHead();
   const remoteBranches = listGitRemoteBranches();
   const { current, branches } = listGitLocalBranches();
