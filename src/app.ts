@@ -125,7 +125,7 @@ export async function start() {
         default: () => "Y",
       },
     ]);
-    if (response.continue) {
+    if (((response as unknown) as { continue: boolean }).continue) {
       deleteBranches(unique);
     }
   } catch (error) {
