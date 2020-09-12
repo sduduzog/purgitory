@@ -20,7 +20,7 @@ or
 ```bash
 $ npm -g i purgitory
 
-$ purgit
+$ purgit --help
 ```
 
 ## Contribution

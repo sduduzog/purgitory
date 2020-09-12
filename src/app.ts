@@ -139,7 +139,7 @@ function getMergedBranchestoDelete(
 }
 
 async function deleteBranch(branch: string) {
-  // await execAsync(`git branch -d ${branch}`, { encoding: "utf-8" });
+  await execAsync(`git branch -d ${branch}`, { encoding: "utf-8" });
 }
 
 async function promptForConfirmation() {
