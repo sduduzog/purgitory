@@ -168,11 +168,12 @@ async function start(args) {
     }
     console.log("The following branches will be purged\n\n");
     branchesToDelete.forEach(branch => {
-        console.log(`\t${branch}`);
+        console.log(`  ${branch}`);
     });
+    console.log("\n");
     const shouldContinue = await safeRun(promptForConfirmation);
     if (shouldContinue) {
-        for (const branch in branchesToDelete) {
+        for (const branch of branchesToDelete) {
             if (!dryRun) {
                 await safeRun(deleteBranch, null, branch);
             }
