@@ -52,12 +52,23 @@ async function checkGitInstalled() {
 }
 
 async function checkDirectoryIsGitRepository() {
-  const result = await execAsync(
-    "git rev-parse --is-inside-work-tree 2>/dev/null",
-    {
-      encoding: "utf-8",
-    }
-  );
+  const result = false;
+  if(process.platform === "win32") {
+    result = await execAsync(
+      "git rev-parse --is-inside-work-tree",
+      {
+        encoding: "utf-8",
+      }
+    );
+  } else {
+    result = await execAsync(
+      "git rev-parse --is-inside-work-tree 2>/dev/null",
+      {
+        encoding: "utf-8",
+      }
+    );
+  }
+
   const notAGitRepository = !result.stdout;
   if (notAGitRepository) {
     const path = process.cwd();
