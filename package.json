@@ -22,7 +22,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
-    "stage": "git add *.js",
+    "stage": "git add *.js *.ts",
     "lint": "eslint --fix"
   },
   "precommit": [
