@@ -9,7 +9,7 @@
   },
   "repository": "git@github.com:sduduzog/purgitory.git",
   "author": "sduduzog <gumedesduduzo@gmail.com>",
-  "license": "GLP-3.0",
+  "license": "GPL-3.0-only",
   "keywords": [
     "purge",
     "git",
@@ -22,7 +22,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
-    "stage": "git add *.js"
+    "stage": "git add *.js",
+    "lint": "eslint --fix"
   },
   "precommit": [
     "build",
