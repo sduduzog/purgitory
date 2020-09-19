@@ -25,10 +25,6 @@
     "stage": "git add *.js *.ts",
     "lint": "eslint --fix"
   },
-  "precommit": [
-    "build",
-    "stage"
-  ],
   "dependencies": {
     "inquirer": "^7.3.3",
     "yargs": "^16.0.3"
@@ -47,7 +43,6 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.4.2",
-    "pre-commit": "^1.2.2",
     "prettier": "^2.1.1",
     "typescript": "^4.0.2"
   }
