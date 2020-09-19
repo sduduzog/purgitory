@@ -2,6 +2,7 @@
 
 Purge local branches that have been merged and deleted to the main branch in remote
 
+![CircleCI](https://img.shields.io/circleci/build/github/sduduzog/purgitory/master?style=plastic)
 ![npm](https://img.shields.io/npm/v/purgitory?style=plastic)
 ![NPM](https://img.shields.io/npm/l/purgitory?style=plastic)
 
