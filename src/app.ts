@@ -52,19 +52,16 @@ async function checkGitInstalled() {
 }
 
 async function checkDirectoryIsGitRepository() {
-  const result = false;
+  let notAGitRepository = false;
   try {
-    result = await execAsync(
-      "git rev-parse --is-inside-work-tree",
-      {
-        encoding: "utf-8",
-      }
-    );
+    const result = await execAsync("git rev-parse --is-inside-work-tree", {
+      encoding: "utf-8",
+    });
+    notAGitRepository = result.stdout !== "true";
   } catch {
-    result = false;
+    notAGitRepository = false;
   }
 
-  const notAGitRepository = result.stdout !== "true";
   if (notAGitRepository) {
     const path = process.cwd();
     const paths = path.split("/");
