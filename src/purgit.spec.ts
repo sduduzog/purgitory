@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const mockApp = {
   start: jest.fn(),
+  dryRunStart: jest.fn(),
 };
 
 describe(`purgit.js`, () => {
@@ -41,6 +42,19 @@ describe(`purgit.js`, () => {
 
         // assert
         expect(mockExit).toHaveBeenCalledWith(0);
+      });
+    });
+    describe(`with --dry-run flag`, () => {
+      it(`should run start app with no side effects`, () => {
+        // arrange
+        process.argv = ["node", "jest", "--dry-run"];
+        const spy = spyOn(mockApp, "dryRunStart");
+
+        // act
+        require("./purgit");
+
+        // assert
+        expect(spy).toHaveBeenCalled();
       });
     });
   });

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { start } from "./app";
+import { dryRunStart, start } from "./app";
 import yargs from "yargs";
 
 const args = yargs.usage("Usage: $0 [options]").option("dry-run", {
@@ -10,4 +10,8 @@ const args = yargs.usage("Usage: $0 [options]").option("dry-run", {
   description: "A rehearsal, no side effects",
 }).argv;
 
-start(args);
+if (args["dry-run"]) {
+  dryRunStart(args);
+} else {
+  start(args);
+}

@@ -1,8 +1,8 @@
 {
   "name": "purgitory",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Purge local branches that have been merged to the main branch in remote",
-  "main": "bin/index.js",
+  "main": "bin/purgit.js",
   "bin": {
     "purgitory": "./bin/purgit.js",
     "purgit": "./bin/purgit.js"
@@ -16,6 +16,7 @@
     "prune",
     "branches",
     "purgit",
+    "merged",
     "purgitory"
   ],
   "private": false,

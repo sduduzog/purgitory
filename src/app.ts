@@ -161,6 +161,10 @@ type IArgs = {
   [key: string]: boolean | unknown;
 };
 
+export async function dryRunStart(params: IArgs): Promise<void> {
+  console.log("dry run start");
+}
+
 export async function start(args: IArgs): Promise<void> {
   const dryRun = args["dry-run"];
   await safeRun(checkGitInstalled);
