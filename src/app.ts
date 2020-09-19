@@ -211,5 +211,4 @@ export async function start(args: IArgs): Promise<void> {
       console.log("deleted", branch);
     }
   }
-  process.exit();
 }

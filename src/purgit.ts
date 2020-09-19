@@ -11,7 +11,7 @@ const args = yargs.usage("Usage: $0 [options]").option("dry-run", {
 }).argv;
 
 if (args["dry-run"]) {
-  dryRunStart(args);
+  dryRunStart(args).finally(() => process.exit(0));
 } else {
-  start(args);
+  start(args).finally(() => process.exit(0));
 }

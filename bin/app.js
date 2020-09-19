@@ -18,7 +18,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.start = void 0;
+exports.start = exports.dryRunStart = void 0;
 const util_1 = require("util");
 const child_process_1 = require("child_process");
 const inquirer_1 = __importStar(require("inquirer"));
@@ -152,6 +152,10 @@ async function promptForConfirmation() {
     ]);
     return response === null || response === void 0 ? void 0 : response.continue;
 }
+async function dryRunStart(params) {
+    console.log("dry run start");
+}
+exports.dryRunStart = dryRunStart;
 async function start(args) {
     const dryRun = args["dry-run"];
     await safeRun(checkGitInstalled);
@@ -186,6 +190,5 @@ async function start(args) {
             console.log("deleted", branch);
         }
     }
-    process.exit();
 }
 exports.start = start;

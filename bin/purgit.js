@@ -11,4 +11,9 @@ const args = yargs_1.default.usage("Usage: $0 [options]").option("dry-run", {
     default: false,
     description: "A rehearsal, no side effects",
 }).argv;
-app_1.start(args);
+if (args["dry-run"]) {
+    app_1.dryRunStart(args).finally(() => process.exit(0));
+}
+else {
+    app_1.start(args).finally(() => process.exit(0));
+}
