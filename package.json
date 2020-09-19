@@ -25,7 +25,8 @@
     "stage": "git add *.js"
   },
   "precommit": [
-    "build"
+    "build",
+    "stage"
   ],
   "dependencies": {
     "inquirer": "^7.3.3",
