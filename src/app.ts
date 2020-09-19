@@ -165,10 +165,10 @@ export async function start(args: IArgs): Promise<void> {
   const dryRun = args["dry-run"];
   await safeRun(checkGitInstalled);
   await safeRun(checkDirectoryIsGitRepository);
-  updateBottonBar("fetching femote branches");
+  updateBottonBar("fetching femote branches\n");
   await safeRun(fetchRemote, true);
   updateBottonBar("done\n");
-  updateBottonBar("getting default branch (origin/HEAD) from remote");
+  updateBottonBar("getting default branch (origin/HEAD) from remote\n");
   const defaultBranch = await safeRun(getRemoteHead, true);
   updateBottonBar("done: getting default branch from remote\n");
   const remoteBranches = await safeRun(listGitRemoteBranches);
