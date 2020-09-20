@@ -8,7 +8,7 @@ Purge local branches that have been merged and deleted to the main branch in rem
 
 ## Status
 
-It kinda works, but because there are no tests, it's not stable at all
+Pretty stable. It does exactly what's on the cover,but there's lots of room for improvement
 
 ## Usage
 
@@ -37,9 +37,11 @@ $ npm link
 $ npm run dev
 ```
 
+`npm run dev` is just typescript building the project on the fly as files changes and because `npm link` doesn't always behaves, unit tests are your best friend when working on something.
+
 ## TODO
 
-- [ ] Unit tests, even just one
+- [x] Unit tests, even just one
 - [ ] Selecting branches to exclude from the merge
 - [ ] Make this be a button away, via gui
 - [ ] Option to force delete remote merged branches, if not yet deleted
