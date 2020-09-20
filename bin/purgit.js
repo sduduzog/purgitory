@@ -13,14 +13,8 @@ const yargs_1 = __importDefault(require("yargs"));
             default: false,
             description: "A rehearsal, no side effects",
         }).argv;
-        if (args["dry-run"]) {
-            await app_1.dryRunStart(args);
-            process.exit(0);
-        }
-        else {
-            await app_1.start(args);
-            process.exit(0);
-        }
+        await app_1.start(args.dryRun);
+        process.exit(0);
     }
     catch (error) {
         console.error(error);

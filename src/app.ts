@@ -1,100 +1,51 @@
-import { promisify } from "util";
-import { execSync, exec } from "child_process";
-import inquirer, { ui } from "inquirer";
-const execAsync = promisify(exec);
-
-const loader = ["\\", "|", "/", "-"];
-let loading = false;
-let i = 4;
-let loaderMessage = "";
-const bottomBar = new ui.BottomBar({ bottomBar: loader[1 % 4] });
-
-function startLoader() {
-  if (loading) return;
-  loading = true;
-  updateBottonBar();
-}
-
-function stopLoader() {
-  loading = false;
-}
-
-function updateBottonBar(message?: string) {
-  if (message) {
-    loaderMessage = message;
-    bottomBar.updateBottomBar(message);
-  }
-  if (!loading) return;
-  bottomBar.updateBottomBar(`${loader[i++ % 4]} ${loaderMessage}`);
-  setTimeout(updateBottonBar, 100);
-}
+import { execSync } from "child_process";
+import inquirer from "inquirer";
+import constants from "./constants";
 
 function exitForErrorGraciously(error) {
   console.error(error);
   process.exit(1);
 }
 
-async function safeRun<T>(
-  callback: ((...args) => Promise<T>) | ((...args) => T),
-  useLoader?: boolean,
-  ...args
-) {
-  if (useLoader) {
-    startLoader();
-  }
-  const result = await callback(args);
-  stopLoader();
-  return result;
-}
-
-async function checkGitInstalled() {
-  await execAsync("git --version", { encoding: "utf-8" });
-}
-
-async function checkDirectoryIsGitRepository() {
-  let notAGitRepository = false;
+function safely<T>(callback: (...args) => T, ...args) {
   try {
-    const result = await execAsync("git rev-parse --is-inside-work-tree", {
-      encoding: "utf-8",
-    });
-    notAGitRepository = result.stdout !== "true";
-  } catch {
-    notAGitRepository = false;
-  }
-
-  if (notAGitRepository) {
-    const path = process.cwd();
-    const paths = path.split("/");
-    const folder = paths[paths.length - 1];
-    const issuesUrl = "https://github.com/sduduzog/purgitory/issues";
-    console.log(`${folder} doesn't seem to be a git repository.`);
-    console.log(`if this is false, report is as a bug ${issuesUrl}`);
-    process.exit(0);
-  }
-}
-
-async function fetchRemote() {
-  await execAsync("git fetch -ap", { encoding: "utf-8" });
-}
-
-function getRemoteHead() {
-  try {
-    const result = execSync("git branch -r", { encoding: "utf-8" });
-    const regex = /origin\/HEAD\s.*/;
-    const line = result.match(regex)[0];
-    const remoteBranch = line.match(
-      /(?!origin\/HEAD\s\S\S\s)origin\/master/
-    )[0];
-    const branch = remoteBranch.replace(/^origin\//, "");
-    return branch;
+    const result = callback(...args);
+    return result;
   } catch (error) {
     exitForErrorGraciously(error);
   }
 }
 
-async function listGitRemoteBranches() {
-  const result = await execAsync("git branch -r", { encoding: "utf-8" });
-  const listOfBranches = result.stdout.split("\n");
+function run(command: string): string {
+  return execSync(command, { encoding: "utf-8" });
+}
+
+export function gitReady(): boolean {
+  const result = safely(run, "git --version");
+  return !!result?.match(/git version \d\.\d+\.\d/);
+}
+
+export function directoryIsGitRepository(): boolean {
+  const result = safely(run, "git rev-parse --is-inside-work-tree");
+  return !!result?.match(/true/);
+}
+
+function fetchRemote() {
+  return safely(run, "git fetch -ap");
+}
+
+function getRemoteHeadRef() {
+  const result = safely(run, "git branch -r");
+  const regex = /origin\/HEAD\s.*/;
+  const line = result?.match(regex)[0];
+  const remoteBranch = line?.match(/(?!origin\/HEAD\s\S\S\s)origin\/master/)[0];
+  const branch = remoteBranch.replace(/^origin\//, "");
+  return branch;
+}
+
+function listGitRemoteBranches() {
+  const result = safely(run, "git branch -r");
+  const listOfBranches = result?.split("\n");
   const branches: Array<string> = [];
   listOfBranches.forEach(item => {
     const trimmed = item.trim();
@@ -106,9 +57,9 @@ async function listGitRemoteBranches() {
   return branches;
 }
 
-async function listGitLocalBranches() {
-  const result = await execAsync("git branch --merged", { encoding: "utf-8" });
-  const listOfBranches = result.stdout.split("\n");
+function listGitLocalBranches() {
+  const result = safely(run, "git branch --merged");
+  const listOfBranches = result?.split("\n");
   const branches: Array<string> = [];
   let current = "";
   listOfBranches.forEach(item => {
@@ -141,8 +92,8 @@ function getMergedBranchestoDelete(
   return unique;
 }
 
-async function deleteBranch(branch: string) {
-  await execAsync(`git branch -d ${branch}`, { encoding: "utf-8" });
+function deleteBranch(branch: string) {
+  safely(run, `git branch -d ${branch}`);
 }
 
 async function promptForConfirmation() {
@@ -157,32 +108,34 @@ async function promptForConfirmation() {
   return response?.continue;
 }
 
-type IArgs = {
-  [key: string]: boolean | unknown;
-};
-
-export async function dryRunStart(params: IArgs): Promise<void> {
-  console.log("dry run start");
+function prepareEnvironment() {
+  if (!gitReady()) {
+    console.log(constants.ERROR_MESSAGE_GIT_NOT_READY);
+    return;
+  }
+  if (!directoryIsGitRepository()) {
+    console.log(constants.ERROR_MESSAGE_DIR_NOT_REPO);
+    return;
+  }
+  fetchRemote();
 }
 
-export async function start(args: IArgs): Promise<void> {
-  const dryRun = args["dry-run"];
-  await safeRun(checkGitInstalled);
-  await safeRun(checkDirectoryIsGitRepository);
-  updateBottonBar("fetching femote branches\n");
-  await safeRun(fetchRemote, true);
-  updateBottonBar("done\n");
-  updateBottonBar("getting default branch (origin/HEAD) from remote\n");
-  const defaultBranch = await safeRun(getRemoteHead, true);
-  updateBottonBar("done: getting default branch from remote\n");
-  const remoteBranches = await safeRun(listGitRemoteBranches);
-  const { current, branches } = await safeRun(listGitLocalBranches);
-
-  if (current !== defaultBranch) {
-    console.log(
-      `${current} is currently checked out and will not be included\n`
-    );
+async function completePurge(branchesToDelete: Array<string>) {
+  const shouldContinue = await safely(promptForConfirmation);
+  if (!shouldContinue) {
+    return;
   }
+  for (const branch of branchesToDelete) {
+    deleteBranch(branch);
+    console.log(`deleted '${branch}'`);
+  }
+}
+
+export async function start(dryRun: boolean): Promise<void> {
+  prepareEnvironment();
+  const defaultBranch = getRemoteHeadRef();
+  const remoteBranches = listGitRemoteBranches();
+  const { current, branches } = listGitLocalBranches();
 
   const branchesToDelete = getMergedBranchestoDelete(
     defaultBranch,
@@ -192,23 +145,18 @@ export async function start(args: IArgs): Promise<void> {
   );
 
   if (branchesToDelete.length === 0) {
-    console.log("No branches to delete, exiting\n");
+    console.log("\nNo branches to purge\n");
     process.exit();
   }
 
-  console.log("The following branches will be purged\n\n");
+  console.log("\nThe following branches will be purged\n");
   branchesToDelete.forEach(branch => {
-    console.log(` ${branch}`);
+    console.log(`- ${branch}`);
   });
-  console.log("\n");
 
-  const shouldContinue = await safeRun(promptForConfirmation);
-  if (shouldContinue) {
-    for (const branch of branchesToDelete) {
-      if (!dryRun) {
-        await safeRun(deleteBranch, null, branch);
-      }
-      console.log("deleted", branch);
-    }
+  if (dryRun) {
+    return;
   }
+
+  await completePurge(branchesToDelete);
 }
