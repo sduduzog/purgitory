@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const mockApp = {
-  start: jest.fn().mockResolvedValue(Promise.resolve("")),
-  dryRunStart: jest.fn().mockResolvedValue(Promise.resolve("")),
+  start: jest.fn().mockResolvedValue(Promise.resolve()),
+  dryRunStart: jest.fn().mockResolvedValue(Promise.resolve()),
 };
 
 describe(`purgit.js`, () => {
