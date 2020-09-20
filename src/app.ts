@@ -39,7 +39,7 @@ function getRemoteHeadRef() {
   const regex = /origin\/HEAD\s.*/;
   const line = result?.match(regex)[0];
   const remoteBranch = line?.match(/(?!origin\/HEAD\s\S\S\s)origin\/master/)[0];
-  const branch = remoteBranch.replace(/^origin\//, "");
+  const branch = remoteBranch?.replace(/^origin\//, "");
   return branch;
 }
 
@@ -51,7 +51,7 @@ function listGitRemoteBranches() {
     const trimmed = item.trim();
     const matched = trimmed.match(/(?!origin\/HEAD\s.*)^origin\/.*/);
     if (matched) {
-      branches.push(matched[0].replace(/^origin\//, ""));
+      branches.push(matched[0]?.replace(/^origin\//, ""));
     }
   });
   return branches;

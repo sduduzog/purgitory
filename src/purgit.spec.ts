@@ -48,7 +48,7 @@ describe(`purgit.js`, () => {
       it(`should run start app with no side effects`, () => {
         // arrange
         process.argv = ["node", "jest", "--dry-run"];
-        const spy = spyOn(mockApp, "dryRunStart");
+        const spy = spyOn(mockApp, "start");
 
         // act
         require("./purgit");

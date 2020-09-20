@@ -4,8 +4,7 @@ const mockChildProcess = {
 
 jest.mock("child_process", () => mockChildProcess);
 
-import { start, gitReady, directoryIsGitRepository } from "./app";
-import constants from "./constants";
+import { gitReady, directoryIsGitRepository } from "./app";
 describe(`app.ts`, () => {
   const originalProcess = process;
   const exitFn = (jest.fn() as unknown) as () => never;
@@ -81,22 +80,6 @@ describe(`app.ts`, () => {
 
         // assert
         expect(result).toEqual(true);
-      });
-    });
-  });
-
-  describe(`dryRunStart()`, () => {
-    describe(`when git not installed`, () => {
-      it(`should print relevant error message`, () => {
-        // arrange
-        mockChildProcess.execSync.mockImplementation(throwErr);
-        const spy = spyOn(console, "log");
-
-        // act
-        start(true);
-
-        // assert
-        expect(spy).toHaveBeenCalledWith(constants.ERROR_MESSAGE_GIT_NOT_READY);
       });
     });
   });
