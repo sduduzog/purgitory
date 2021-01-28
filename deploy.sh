@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 source $HOME/.nvm/nvm.sh
-nvm "$@"
+nvm run npm -v
