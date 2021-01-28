@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-. $HOME/.bashrc
-npm -v
+source $HOME/.nvm/nvm.sh
+nvm "$@"
